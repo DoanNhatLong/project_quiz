@@ -14,14 +14,17 @@ export const useAuth = () => {
                 return
             }
 
-            try {
-                const data = await getMe()
-                setUser(data)
-            } catch {
-                setUser(null)
-            } finally {
-                setLoading(false)
+            // Chỉ gọi /auth/me nếu đang ở /home (vừa redirect từ Google về)
+            if (window.location.pathname === '/home') {
+                try {
+                    const data = await getMe()
+                    setUser(data)
+                } catch {
+                    setUser(null)
+                }
             }
+
+            setLoading(false)
         }
 
         checkAuth()

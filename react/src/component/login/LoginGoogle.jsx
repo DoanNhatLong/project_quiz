@@ -1,9 +1,11 @@
-import { loginWithGoogle } from '../../service/authService'
-
 export default function LoginGoogle() {
+    const handleLogin = () => {
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google'
+    }
+
     return (
         <button
-            onClick={loginWithGoogle}
+            onClick={handleLogin}
             style={{
                 width: '100%',
                 display: 'flex',

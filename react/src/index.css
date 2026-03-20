@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "rpg-awesome/css/rpg-awesome.min.css";
 
+#root {
+    width: 100%;
+}
 * {
     box-sizing: border-box;
     margin: 0;

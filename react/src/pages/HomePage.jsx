@@ -1,19 +1,26 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
-import LoginPage from '../pages/LoginPage'
+import React from 'react';
+import { getUser } from '../service/authService';
+import Navbar from "../component/common/Navbar.jsx";
+import Content from "../component/home/Content.jsx";
+import LeftSide from "../component/common/LeftSide.jsx";
+import RightSide from "../component/common/RightSide.jsx";
+import './css/HomePage.css';
 
-function App() {
-    const { user, loading } = useAuth()
-
-    if (loading) return <div>Loading...</div>
+export default function HomePage() {
+    const user = getUser();
 
     return (
-        <Routes>
-            <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/home" />} />
-            <Route path="/home" element={user ? <div>Chào {user.name}!</div> : <Navigate to="/login" />} />
-            <Route path="*" element={<Navigate to={user ? "/home" : "/login"} />} />
-        </Routes>
-    )
-}
+        <div className="homepage-container">
+            <Navbar />
+            <div className="main-layout">
+                <LeftSide />
 
-export default App
+                <main className="content-area">
+                    <Content />
+                </main>
+
+                <RightSide user={user} />
+            </div>
+        </div>
+    );
+}
