@@ -87,4 +87,9 @@ public class QuestionsService implements IQuestionsService {
         q.setDeleted(true);
         questionsRepository.save(q);
     }
+
+    @Override
+    public List<Questions> findRandom10ByQuizId(Long quizId) {
+        return questionsRepository.findRandom10ByQuizId(quizId);
+    }
 }

@@ -1,0 +1,103 @@
+.level-image-container {
+    width: 100%;
+    height: 140px;
+    position: relative; /* Quan trọng để lock-overlay căn theo nó */
+    border-radius: 10px;
+    overflow: hidden;
+    background: #eee;
+    margin-bottom: 15px;
+}
+
+.level-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Giúp ảnh phủ kín khung hình */
+}
+
+.lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Làm tối ảnh khi bị khóa */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lock-icon {
+    font-size: 30px;
+}
+
+.level-card.locked {
+    filter: grayscale(1); /* Biến toàn bộ card bị khóa thành màu xám */
+    cursor: not-allowed;
+}
+
+.quiz-js-container {
+    background-color: #f4f7f6;
+    min-height: 100vh;
+}
+
+.difficulty-selection {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.levels-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.level-card {
+    background: white;
+    width: 200px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.level-card.unlocked:hover {
+    transform: translateY(-10px);
+}
+
+.level-card.locked {
+    opacity: 0.6;
+    filter: grayscale(0.8);
+    cursor: not-allowed;
+    background: #e0e0e0;
+}
+
+.level-image-placeholder {
+    width: 100%;
+    height: 120px;
+    background: #eee;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+}
+
+.start-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.start-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+}

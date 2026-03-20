@@ -36,6 +36,7 @@ public class QuestionsController {
         return ResponseEntity.ok(questionsService.create(dto));
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<QuestionsResponseDTO> update(@PathVariable Long id,
                                                        @RequestBody QuestionsRequestDTO dto) {

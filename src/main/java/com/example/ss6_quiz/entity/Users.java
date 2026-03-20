@@ -30,6 +30,8 @@ public class Users {
 
     private Integer streak = 0;
 
+    private Integer points = 0;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
     boolean isDeleted = false;

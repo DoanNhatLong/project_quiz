@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
 @Entity
@@ -36,4 +37,7 @@ public class Questions {
     public enum QuestionType {
         single, multiple
     }
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Answers> answers;
 }

@@ -1,7 +1,9 @@
 package com.example.ss6_quiz.config;
 
 import com.example.ss6_quiz.entity.Users;
+import com.example.ss6_quiz.repository.IRolesRepository;
 import com.example.ss6_quiz.repository.IUsersRepository;
+import com.example.ss6_quiz.service.IRolesService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Autowired
     private IUsersRepository usersRepository;
+    @Autowired
+    private IRolesService rolesService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
@@ -32,6 +36,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             newUser.setEmail(email);
             newUser.setUsername(name);
             newUser.setPassword("");
+            newUser.setRoles(rolesService.findById(2L));
             return usersRepository.save(newUser);
         });
 
