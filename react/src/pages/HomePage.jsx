@@ -1,15 +1,14 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { getUser } from '../service/authService';
 import Navbar from "../component/common/Navbar.jsx";
 import Content from "../component/home/Content.jsx";
 import LeftSide from "../component/common/LeftSide.jsx";
 import RightSide from "../component/common/RightSide.jsx";
 import './css/HomePage.css';
-import Profile from "../component/home/Profile.jsx";
+import {useSelector} from "react-redux";
 
 export default function HomePage() {
-    const user = getUser();
+    const user = useSelector((state) => state.user.data);
 
     return (
         <div className="homepage-container">

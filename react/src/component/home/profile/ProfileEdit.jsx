@@ -1,62 +1,127 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../../redux/userSlice.js";
+import { toast } from "react-toastify";
+import axios from "axios"; // Đảm bảo đã install axios
 
-const ProfileEdit = ({ user, setUser }) => {
+const ProfileEdit = () => {
     const navigate = useNavigate();
-    const [tempName, setTempName] = useState(user.name || user.username);
+    const dispatch = useDispatch();
 
-    const handleSave = () => {
-        setUser({ ...user, name: tempName });
-        navigate('/home/profile');
+    // Lấy thông tin user hiện tại từ Redux Store
+    const user = useSelector((state) => state.user.data);
+
+    // State cho các ô nhập liệu
+    const [tempName, setTempName] = useState(user?.username || "");
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleSave = async () => {
+        // 1. Validate nhanh tại FE
+        if (!oldPassword) {
+            toast.warn("Vui lòng nhập mật khẩu cũ để xác thực!");
+            return;
+        }
+
+        if (newPassword && newPassword.length < 3) {
+            toast.error("Mật khẩu mới phải có ít nhất 3 ký tự!");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // 2. Gửi request đến API Update Profile
+            const response = await axios.put("http://localhost:8080/users/update-profile", {
+                id: user.id,
+                username: tempName,
+                oldPassword: oldPassword,
+                newPassword: newPassword
+            }, {
+                headers: {
+                    Authorization: `Bearer ${user.token}` // Nếu bạn dùng Spring Security
+                }
+            });
+
+
+            dispatch(setUser({
+                ...response.data,
+                token: user.token
+            }));
+
+            toast.success("Cập nhật thông tin thành công!");
+            navigate('/profile');
+
+        } catch (error) {
+            // Lấy message lỗi từ Map.of của Backend gửi về
+            const errorMsg = error.response?.data?.message || "Có lỗi xảy ra, vui lòng thử lại!";
+            toast.error(errorMsg);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
         <section className="nes-container is-with-title" style={{ backgroundColor: "white", padding: "30px" }}>
             <p className="title" style={{ fontSize: "1.5rem" }}>Edit Character</p>
 
-            <div className="nes-field" style={{ marginBottom: "25px" }}>
-                <label htmlFor="name_field" style={{ display: "block", marginBottom: "10px" }}>
-                    <i className="ra ra-edit-style"></i> New Name
-                </label>
+            {/* Input Name */}
+            <div className="nes-field" style={{ marginBottom: "20px" }}>
+                <label htmlFor="name_field">New Name</label>
                 <input
                     type="text"
                     id="name_field"
                     className="nes-input"
                     value={tempName}
                     onChange={(e) => setTempName(e.target.value)}
-                    placeholder="Enter your hero name..."
                 />
             </div>
 
-            <div className="nes-field" style={{ marginBottom: "25px" }}>
-                <label style={{ display: "block", marginBottom: "10px", color: "#999" }}>
-                    <i className="ra ra-envelope"></i> Email (Cannot change)
-                </label>
+            {/* Input Old Password */}
+            <div className="nes-field" style={{ marginBottom: "20px" }}>
+                <label htmlFor="old_pass">Current Password <span style={{color: "red"}}>*</span></label>
                 <input
-                    type="text"
-                    className="nes-input is-disabled"
-                    value={user.email}
-                    disabled
+                    type="password"
+                    id="old_pass"
+                    className="nes-input"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    placeholder="Confirm current password"
+                />
+            </div>
+
+            {/* Input New Password */}
+            <div className="nes-field" style={{ marginBottom: "20px" }}>
+                <label htmlFor="new_pass">New Password (Optional)</label>
+                <input
+                    type="password"
+                    id="new_pass"
+                    className="nes-input"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Leave blank to keep current"
                 />
             </div>
 
             <div style={{ marginTop: "40px", display: "flex", gap: "20px" }}>
                 <button
                     onClick={handleSave}
+                    disabled={loading}
                     type="button"
-                    className="nes-btn is-primary"
-                    style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}
+                    className={`nes-btn is-primary ${loading ? 'is-disabled' : ''}`}
+                    style={{ flex: 1 }}
                 >
-                    <i className="ra ra-save"></i> SAVE
+                    {loading ? "SAVING..." : "SAVE"}
                 </button>
 
                 <button
                     onClick={() => navigate(-1)}
                     type="button"
                     className="nes-btn"
-                    style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}
+                    style={{ flex: 1 }}
                 >
-                    <i className="ra ra-pawn"></i> CANCEL
+                    CANCEL
                 </button>
             </div>
         </section>

@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { useAuth } from './hooks/useAuth'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import QuizJS from "./component/quiz/QuizJS.jsx";
@@ -10,15 +9,12 @@ import Register from "./component/login/Register.jsx";
 import Profile from "./component/home/Profile.jsx";
 
 function App() {
-    const { user, loading } = useAuth()
-
-    if (loading) return <div>Loading...</div>
 
     return (
         <>
             <ToastContainer/>
             <Routes>
-                <Route path="/login" element={!user ? <LoginPage /> : <Navigate to="/home" />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/home/*" element={<HomePage />} />
                 <Route path="/quiz-js" element={<QuizJS />} />
                 <Route path="/register" element={<Register />} />

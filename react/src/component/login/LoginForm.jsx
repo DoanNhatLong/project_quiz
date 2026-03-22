@@ -2,16 +2,21 @@ import { useState } from 'react'
 import { userService } from "../../service/userService.js"
 import { toast } from 'react-toastify'
 import { useNavigate } from "react-router-dom"
+import {useDispatch} from "react-redux";
+import {setUser} from "../../redux/userSlice.js";
 
 export default function LoginForm() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleSubmit = () => {
         userService.loginUser({ username, password })
             .then(res => {
-                localStorage.setItem('user', JSON.stringify(res.data));
+                const user = res.data;
+
+                dispatch(setUser(user));
                 toast.success("Đăng nhập thành công!");
                 navigate('/home');
             })

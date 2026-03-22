@@ -1,4 +1,4 @@
-import LoginForm from '../component/login/LoginForm'
+import LoginForm from "../component/login/LoginForm.jsx";
 import LoginGoogle from '../component/login/LoginGoogle'
 
 export default function LoginPage() {

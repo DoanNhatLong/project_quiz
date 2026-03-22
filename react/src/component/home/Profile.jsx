@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Routes, Route } from 'react-router-dom';
-import useLocalStorage from "../../hooks/useLocalStorage";
 import md5 from "md5";
 import Navbar from "../common/Navbar.jsx";
 import ProfileView from "./profile/ProfileView.jsx";

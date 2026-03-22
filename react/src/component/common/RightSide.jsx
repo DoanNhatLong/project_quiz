@@ -1,11 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../redux/userSlice.js";
 
-const RightSide = ({ user }) => {
+const RightSide = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const user = useSelector((state) => state.user.data);
 
     function handleLogout() {
-        localStorage.removeItem('user');
+        dispatch(logout());
         navigate('/login');
     }
 
@@ -19,7 +24,7 @@ const RightSide = ({ user }) => {
                             <div style={{ textAlign: "center" }}>
                                 <i className="nes-ash" style={{ transform: "scaleX(-1)" }}></i>
                                 <p style={{ marginTop: "10px", color: "#f7d51d" }}>LVL. 1 Adventurer</p>
-                                <h3 style={{ fontSize: "1.2rem" }}>{user.name}</h3>
+                                <h3 style={{ fontSize: "1.2rem" }}>Chào {user.username}</h3>
                             </div>
 
                             <button
