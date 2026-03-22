@@ -1,11 +1,23 @@
 import { useState } from 'react'
+import { userService } from "../../service/userService.js"
+import { toast } from 'react-toastify'
+import { useNavigate } from "react-router-dom"
 
 export default function LoginForm() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = () => {
-        console.log({ username, password })
+        userService.loginUser({ username, password })
+            .then(res => {
+                localStorage.setItem('user', JSON.stringify(res.data));
+                toast.success("Đăng nhập thành công!");
+                navigate('/home');
+            })
+            .catch(err => {
+                toast.error(err.response?.data || "Sai tên đăng nhập hoặc mật khẩu!");
+            });
     }
 
     const inputStyle = {

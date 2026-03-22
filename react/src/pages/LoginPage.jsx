@@ -17,21 +17,27 @@ export default function LoginPage() {
                     Đăng nhập để bắt đầu hành trình!
                 </p>
 
-                <LoginForm />
+                <div className="flex flex-col gap-8">
+                    <LoginForm />
 
-                <div className="flex items-center gap-3 my-6">
-                    <div className="flex-1 h-px bg-gray-300"></div>
-                    <span className="text-gray-400" style={{ fontSize: '14px', fontFamily: "'Courier New', monospace" }}>hoặc</span>
-                    <div className="flex-1 h-px bg-gray-300"></div>
+                    <div className="flex items-center gap-3">
+                        <div className="flex-1 h-px bg-gray-300"></div>
+                        <span className="text-gray-400 text-sm font-mono">hoặc</span>
+                        <div className="flex-1 h-px bg-gray-300"></div>
+                    </div>
+
+                    <LoginGoogle />
+
+                    <div className="border-t pt-6">
+                        <p className="text-center text-gray-400 text-sm font-mono">
+                            Chưa có tài khoản?{' '}
+                            <a href="/register" className="text-blue-500 font-bold hover:underline">
+                                Đăng ký
+                            </a>
+                        </p>
+                    </div>
                 </div>
 
-                <LoginGoogle />
-
-                <p className="text-center mt-6 text-gray-400"
-                   style={{ fontFamily: "'Courier New', monospace", fontSize: '14px' }}>
-                    Chưa có tài khoản?{' '}
-                    <a href="/register" className="text-blue-500 font-bold hover:underline">Đăng ký</a>
-                </p>
             </div>
         </div>
     )

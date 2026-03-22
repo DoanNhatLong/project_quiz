@@ -1,10 +1,12 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { getUser } from '../service/authService';
 import Navbar from "../component/common/Navbar.jsx";
 import Content from "../component/home/Content.jsx";
 import LeftSide from "../component/common/LeftSide.jsx";
 import RightSide from "../component/common/RightSide.jsx";
 import './css/HomePage.css';
+import Profile from "../component/home/Profile.jsx";
 
 export default function HomePage() {
     const user = getUser();
@@ -16,7 +18,9 @@ export default function HomePage() {
                 <LeftSide />
 
                 <main className="content-area">
-                    <Content />
+                    <Routes>
+                        <Route index element={<Content />} />
+                    </Routes>
                 </main>
 
                 <RightSide user={user} />

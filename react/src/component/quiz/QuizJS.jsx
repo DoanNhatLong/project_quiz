@@ -18,7 +18,7 @@ export default function QuizJS() {
     ];
 
     const handleStartQuiz = (levelId) => {
-        navigate(`/quiz-play/${levelId}`);
+        navigate(`/quiz-module/${levelId}`);
     };
 
     return (
@@ -37,7 +37,6 @@ export default function QuizJS() {
                                 key={lvl.id}
                                 className={`level-card ${isLocked ? 'locked' : 'unlocked'}`}
                             >
-                                {/* 2. Chỗ này là nơi hiển thị 5 ảnh khác nhau */}
                                 <div className="level-image-container">
                                     <img
                                         src={lvl.image}

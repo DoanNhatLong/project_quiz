@@ -1,21 +1,75 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RightSide = ({ user }) => {
+    const navigate = useNavigate();
+
+    function handleLogout() {
+        localStorage.removeItem('user');
+        navigate('/login');
+    }
+
     return (
-        <aside className="sidebar-wrapper">
-            <div className="panel-list">
-                <h3 className="panel-title">user profile</h3>
-                <div className="panel-content">
+        <aside style={{ padding: "20px", width: "300px" }}>
+            <div className="nes-container is-dark">
+
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "15px" }}>
                     {user ? (
-                        <div className="user-profile-box">
-                            <p><strong>Name:</strong> {user.name}</p>
-                            <p className="status-online">Status: Online</p>
-                        </div>
+                        <>
+                            <div style={{ textAlign: "center" }}>
+                                <i className="nes-ash" style={{ transform: "scaleX(-1)" }}></i>
+                                <p style={{ marginTop: "10px", color: "#f7d51d" }}>LVL. 1 Adventurer</p>
+                                <h3 style={{ fontSize: "1.2rem" }}>{user.name}</h3>
+                            </div>
+
+                            <button
+                                type="button"
+                                className="nes-btn is-primary is-fullwidth"
+                                onClick={() => navigate('/profile')}
+                                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}
+                            >
+                                <i className="ra ra-player"></i>
+                                INFO
+                            </button>
+
+                            <button
+                                type="button"
+                                className="nes-btn is-error is-fullwidth"
+                                onClick={handleLogout}
+                            >
+                                LOGOUT
+                            </button>
+                        </>
                     ) : (
-                        <p className="placeholder-text">Please login to see profile</p>
+                        <>
+                            <div style={{ textAlign: "center" }}>
+                                <i className="nes-pokeball"></i>
+                                <h3 style={{ marginTop: "10px" }}>Hello, Guest</h3>
+                                <p style={{ fontSize: "0.8rem" }}>Login to save progress</p>
+                            </div>
+
+                            <button
+                                type="button"
+                                className="nes-btn is-success is-fullwidth"
+                                onClick={() => navigate('/login')}
+                                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}
+                            >
+                                <i className="ra ra-key"></i>
+                                LOGIN
+                            </button>
+
+                            <button
+                                type="button"
+                                className="nes-btn is-warning is-fullwidth"
+                                onClick={() => navigate('/register')}
+                            >
+                                REGISTER
+                            </button>
+                        </>
                     )}
                 </div>
             </div>
+
         </aside>
     );
 };

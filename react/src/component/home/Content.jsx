@@ -5,7 +5,7 @@ const Content = () => {
     const cards = [
         { id: 1, title: 'JavaScript', img: 'src/assets/image/js.jpg', desc: 'Master JS Fundamentals' },
         { id: 2, title: 'Java', img: 'src/assets/image/java.jpg', desc: 'Deep dive into Java' },
-        { id: 3, title: 'Store', img: 'src/assets/image/store.jpg', desc: 'Exchange your points' },
+        { id: 3, title: 'Store', img: 'src/assets/image/store.jpg', desc: 'Exchange your point' },
         { id: 4, title: 'Challenger', img: 'src/assets/image/challenger.jpg', desc: 'Daily challenges' }
     ];
 
