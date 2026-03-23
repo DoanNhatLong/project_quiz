@@ -7,6 +7,8 @@ import {ToastContainer} from "react-toastify";
 import QuizModule from "./component/quiz/QuizModule.jsx";
 import Register from "./component/login/Register.jsx";
 import Profile from "./component/home/Profile.jsx";
+import QuizResult from "./component/quiz/QuizResult.jsx";
+import QuizFinished from "./component/quiz/QuizFinished.jsx";
 
 function App() {
 
@@ -19,8 +21,10 @@ function App() {
                 <Route path="/quiz-js" element={<QuizJS />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/quiz-module/:id" element={<QuizModule />} />
-                <Route path="/quiz-play/:id" element={<QuizPlay />} />
+                <Route path="/quiz-play/:quizId/:attemptId" element={<QuizPlay />} />
                 <Route path="/profile/*" element={<Profile />} />
+                <Route path="/quiz-result" element={<QuizResult />} />
+                <Route path="/quiz-finished/:attemptId" element={<QuizFinished />} />
                 <Route path="*" element={<HomePage />}  />
             </Routes>
         </>

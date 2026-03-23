@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = "http://localhost:8080/quizzes";
+const API_ATTEMPTS_URL = "http://localhost:8080/quiz-attempts";
 
 export const getQuestionsForPlay = async (quizId) => {
     try {
@@ -13,9 +14,12 @@ export const getQuestionsForPlay = async (quizId) => {
 };
 
 
-export const submitQuizResult = async (resultData) => {
+export const submitQuizResult = async (submission) => {
     try {
-        const response = await axios.post(`${API_BASE_URL}/submit`, resultData);
+        const response = await axios.post(
+            `${API_ATTEMPTS_URL}/submit`,
+            submission
+        );
         return response.data;
     } catch (error) {
         console.error("Lỗi khi nộp bài thi:", error);

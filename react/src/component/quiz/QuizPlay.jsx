@@ -3,10 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {getQuestionsForPlay, submitQuizResult} from '../../service/quizService';
 import { toast } from 'react-toastify';
 import Navbar from "../common/Navbar.jsx";
-import './QuizPlay.css';
+import './css/QuizPlay.css';
 
 export default function QuizPlay() {
-    const { id } = useParams();
+    const { quizId, attemptId } = useParams();
     const navigate = useNavigate();
 
 
@@ -15,34 +15,70 @@ export default function QuizPlay() {
     const [selectedAnswers, setSelectedAnswers] = useState({});
     const [loading, setLoading] = useState(true);
     const [timeLeft, setTimeLeft] = useState(300);
-
+    const isGuest = attemptId === "guest";
 
     const handleSubmit = useCallback(async (reason = "Tự nguyện nộp bài") => {
-        localStorage.removeItem(`quiz_end_time_${id}`);
+        localStorage.removeItem(`quiz_end_time_${attemptId}`);
 
-        const submission = {
-            quizId: id,
-            answers: selectedAnswers
-        };
+        if (isGuest) {
+            let correct = 0;
 
-        console.log("Dữ liệu nộp bài:", submission);
-        await submitQuizResult(submission)
+            questions.forEach(q => {
+                const correctAnswers = q.answers
+                    .filter(a => a.isCorrect)
+                    .map(a => a.id);
 
-        if (reason !== "Tự nguyện nộp bài") {
-            toast.error(`THU BÀI CƯỠNG CHẾ: ${reason}!`, { position: "top-center", autoClose: 3000 });
-        } else {
-            toast.success("Nộp bài thành công!");
+                const userAnswers = selectedAnswers[q.id] || [];
+
+                const isRight =
+                    correctAnswers.length === userAnswers.length &&
+                    correctAnswers.every(id => userAnswers.includes(id));
+
+                if (isRight) correct++;
+            });
+
+            navigate('/quiz-result', {
+                state: {
+                    correct: correct,
+                    total: questions.length,
+                    isGuest: true
+                }
+            });
+
+            return;
         }
 
-        setTimeout(() => {
-            navigate('/quiz-js');
-        }, 1500);
-    }, [id, selectedAnswers, navigate]);
+        try {
+            const submission = {
+                attemptId: Number(attemptId),
+                answers: questions.reduce((acc, q) => {
+                    acc[q.id] = selectedAnswers[q.id] || [];
+                    return acc;
+                }, {})
+            };
+
+            const response = await submitQuizResult(submission);
+
+            if (reason !== "Tự nguyện nộp bài") {
+                toast.warning(`Hệ thống đã tự động thu bài: ${reason}`);
+            } else {
+                toast.success("Nộp bài thành công!");
+            }
+
+            navigate(`/quiz-finished/${attemptId}`, {
+                state: { resultData: response }
+            });
+
+        } catch (error) {
+            console.error("Lỗi nộp bài:", error);
+            toast.error("Không thể kết nối máy chủ để nộp bài!");
+        }
+    }, [attemptId, isGuest, selectedAnswers, questions, navigate]);
 
     useEffect(() => {
         const loadQuizData = async () => {
             try {
-                const data = await getQuestionsForPlay(id);
+                const data = await getQuestionsForPlay(quizId);
                 if (!data || data.length === 0) {
                     toast.warn("Không có dữ liệu câu hỏi!");
                     navigate('/quiz-js');
@@ -50,14 +86,14 @@ export default function QuizPlay() {
                 }
                 setQuestions(data);
 
-                const savedEndTime = localStorage.getItem(`quiz_end_time_${id}`);
+                const savedEndTime = localStorage.getItem(`quiz_end_time_${attemptId}`);
                 let remaining;
 
                 if (savedEndTime) {
                     remaining = Math.floor((parseInt(savedEndTime) - Date.now()) / 1000);
                 } else {
                     const newEndTime = Date.now() + (5 * 60 * 1000); // 5 phút từ bây giờ
-                    localStorage.setItem(`quiz_end_time_${id}`, newEndTime.toString());
+                    localStorage.setItem(`quiz_end_time_${attemptId}`, newEndTime.toString());
                     remaining = 300;
                 }
 
@@ -74,7 +110,7 @@ export default function QuizPlay() {
             }
         };
         loadQuizData();
-    }, [id, navigate]);
+    }, [quizId, attemptId, navigate]);
 
     // useEffect(() => {
     //     if (loading) return;

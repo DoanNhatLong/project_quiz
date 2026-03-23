@@ -1,8 +1,10 @@
 import React from 'react';
 import Navbar from "../common/Navbar.jsx";
 import { getUser } from "../../service/authService.js";
-import './QuizJS.css';
+import './css/QuizJS.css';
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {toast} from "react-toastify";
 
 export default function QuizJS() {
     const user = getUser();
@@ -10,15 +12,32 @@ export default function QuizJS() {
     const navigate = useNavigate();
 
     const levels = [
-        { id: 1, name: 'level 1', requiredExp: 0, guestAccessible: true, image: 'https://via.placeholder.com/150/tree?text=Seed' },
-        { id: 2, name: 'level 2', requiredExp: 100, guestAccessible: false, image: 'https://via.placeholder.com/150/sprout?text=Sprout' },
-        { id: 3, name: 'level 3', requiredExp: 200, guestAccessible: false, image: 'https://via.placeholder.com/150/flower?text=Flower' },
-        { id: 4, name: 'level 4', requiredExp: 500, guestAccessible: false, image: 'https://via.placeholder.com/150/forest?text=Tree' },
-        { id: 5, name: 'level 5', requiredExp: 1000, guestAccessible: false, image: 'https://via.placeholder.com/150/mountain?text=Forest' },
+        { id: 1, name: 'level 1', requiredExp: 0, guestAccessible: true, image: "src/assets/image/level1.jpg" },
+        { id: 2, name: 'level 2', requiredExp: 100, guestAccessible: false, image: "src/assets/image/level2.jpg" },
+        { id: 3, name: 'level 3', requiredExp: 200, guestAccessible: false, image: "src/assets/image/level3.jpg" },
+        { id: 4, name: 'level 4', requiredExp: 500, guestAccessible: false, image: "src/assets/image/level4.jpg" },
+        { id: 5, name: 'level 5', requiredExp: 1000, guestAccessible: false, image: "src/assets/image/level5.jpg" },
     ];
 
-    const handleStartQuiz = (levelId) => {
-        navigate(`/quiz-module/${levelId}`);
+    const handleStartQuiz = async (quizId) => {
+        if (!user) {
+            navigate(`/quiz-play/${quizId}/guest`);
+            return;
+        }
+
+        try {
+            const response = await axios.post("http://localhost:8080/quiz-attempts/start", {
+                quizId: quizId,
+                userId: user.id
+            });
+
+            const newAttempt = response.data;
+
+            navigate(`/quiz-play/${quizId}/${newAttempt.id}`);
+        } catch (error) {
+            toast.error("Không thể khởi tạo lượt làm bài!");
+            console.log(error);
+        }
     };
 
     return (
