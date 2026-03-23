@@ -26,3 +26,23 @@ export const submitQuizResult = async (submission) => {
         throw error;
     }
 };
+
+export const getUserQuizAttempts = async (userId) => {
+    try {
+        const response = await axios.get(`${API_ATTEMPTS_URL}/user/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi khi lấy lịch sử bài thi:", error);
+        throw error;
+    }
+};
+
+export const getQuizAttemptDetails = async (attemptId) => {
+    try {
+        const response = await axios.get(`${API_ATTEMPTS_URL}/${attemptId}/answers`);
+        return response.data;
+    } catch (error) {
+        console.error("Lỗi khi lấy chi tiết bài thi:", error);
+        throw error;
+    }
+};

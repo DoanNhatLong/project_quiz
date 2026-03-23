@@ -64,7 +64,6 @@ export default function QuizPlay() {
             } else {
                 toast.success("Nộp bài thành công!");
             }
-
             navigate(`/quiz-finished/${attemptId}`, {
                 state: { resultData: response }
             });

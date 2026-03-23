@@ -9,6 +9,7 @@ import Register from "./component/login/Register.jsx";
 import Profile from "./component/home/Profile.jsx";
 import QuizResult from "./component/quiz/QuizResult.jsx";
 import QuizFinished from "./component/quiz/QuizFinished.jsx";
+import QuizReview from "./component/quiz/QuizReview.jsx";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/profile/*" element={<Profile />} />
                 <Route path="/quiz-result" element={<QuizResult />} />
                 <Route path="/quiz-finished/:attemptId" element={<QuizFinished />} />
+                <Route path="/quiz-review/:attemptId" element={<QuizReview />} />
                 <Route path="*" element={<HomePage />}  />
             </Routes>
         </>

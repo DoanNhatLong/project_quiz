@@ -9,7 +9,6 @@ import {useSelector} from "react-redux";
 
 
 export default function Profile() {
-    // const [user, setUser] = useLocalStorage('user', null);
     const user = useSelector((state) => state.user.data);
     const [preview, setPreview] = useState(null);
 
