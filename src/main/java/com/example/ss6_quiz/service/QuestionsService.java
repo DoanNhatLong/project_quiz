@@ -1,7 +1,7 @@
 package com.example.ss6_quiz.service;
 
-import com.example.ss6_quiz.dto.QuestionsRequestDTO;
-import com.example.ss6_quiz.dto.QuestionsResponseDTO;
+import com.example.ss6_quiz.dto.QuestionsRequestDto;
+import com.example.ss6_quiz.dto.QuestionsResponseDto;
 import com.example.ss6_quiz.entity.Questions;
 import com.example.ss6_quiz.entity.Quizzes;
 import com.example.ss6_quiz.repository.IQuestionsRepository;
@@ -20,8 +20,8 @@ public class QuestionsService implements IQuestionsService {
     @Autowired
     private IQuizzesRepository quizzesRepository;
 
-    private QuestionsResponseDTO toDTO(Questions q) {
-        return new QuestionsResponseDTO(
+    private QuestionsResponseDto toDTO(Questions q) {
+        return new QuestionsResponseDto(
                 q.getId(),
                 q.getQuiz().getId(),
                 q.getQuiz().getTitle(),
@@ -33,26 +33,26 @@ public class QuestionsService implements IQuestionsService {
     }
 
     @Override
-    public List<QuestionsResponseDTO> getAll() {
+    public List<QuestionsResponseDto> getAll() {
         return questionsRepository.findAll()
                 .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<QuestionsResponseDTO> getByQuizId(Long quizId) {
+    public List<QuestionsResponseDto> getByQuizId(Long quizId) {
         return questionsRepository.findByQuizId(quizId)
                 .stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Override
-    public QuestionsResponseDTO getById(Long id) {
+    public QuestionsResponseDto getById(Long id) {
         Questions q = questionsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Question not found"));
         return toDTO(q);
     }
 
     @Override
-    public QuestionsResponseDTO create(QuestionsRequestDTO dto) {
+    public QuestionsResponseDto create(QuestionsRequestDto dto) {
         Quizzes quiz = quizzesRepository.findById(dto.quizId())
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
 
@@ -65,7 +65,7 @@ public class QuestionsService implements IQuestionsService {
     }
 
     @Override
-    public QuestionsResponseDTO update(Long id, QuestionsRequestDTO dto) {
+    public QuestionsResponseDto update(Long id, QuestionsRequestDto dto) {
         Questions q = questionsRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Question not found"));
 

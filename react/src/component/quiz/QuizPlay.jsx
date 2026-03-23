@@ -21,30 +21,31 @@ export default function QuizPlay() {
         localStorage.removeItem(`quiz_end_time_${attemptId}`);
 
         if (isGuest) {
-            let correct = 0;
+            let correctCount = 0;
 
             questions.forEach(q => {
-                const correctAnswers = q.answers
-                    .filter(a => a.isCorrect)
-                    .map(a => a.id);
+                const correctIds = q.answers
+                    .filter(a => a.correct === true)
+                    .map(a => Number(a.id));
 
-                const userAnswers = selectedAnswers[q.id] || [];
+                const userSelectedIds = (selectedAnswers[q.id] || []).map(Number);
 
                 const isRight =
-                    correctAnswers.length === userAnswers.length &&
-                    correctAnswers.every(id => userAnswers.includes(id));
+                    correctIds.length === userSelectedIds.length &&
+                    correctIds.every(id => userSelectedIds.includes(id));
 
-                if (isRight) correct++;
+                if (isRight) correctCount++;
             });
+
+            console.log("Số câu đúng tính được:", correctCount);
 
             navigate('/quiz-result', {
                 state: {
-                    correct: correct,
+                    correct: correctCount,
                     total: questions.length,
                     isGuest: true
                 }
             });
-
             return;
         }
 

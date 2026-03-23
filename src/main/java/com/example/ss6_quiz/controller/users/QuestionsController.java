@@ -1,7 +1,7 @@
 package com.example.ss6_quiz.controller.users;
 
-import com.example.ss6_quiz.dto.QuestionsRequestDTO;
-import com.example.ss6_quiz.dto.QuestionsResponseDTO;
+import com.example.ss6_quiz.dto.QuestionsRequestDto;
+import com.example.ss6_quiz.dto.QuestionsResponseDto;
 import com.example.ss6_quiz.service.IQuestionsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,29 +17,29 @@ public class QuestionsController {
     IQuestionsService questionsService;
 
     @GetMapping
-    public ResponseEntity<List<QuestionsResponseDTO>> getAll() {
+    public ResponseEntity<List<QuestionsResponseDto>> getAll() {
         return ResponseEntity.ok(questionsService.getAll());
     }
 
     @GetMapping("/quiz/{quizId}")
-    public ResponseEntity<List<QuestionsResponseDTO>> getByQuizId(@PathVariable Long quizId) {
+    public ResponseEntity<List<QuestionsResponseDto>> getByQuizId(@PathVariable Long quizId) {
         return ResponseEntity.ok(questionsService.getByQuizId(quizId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuestionsResponseDTO> getById(@PathVariable Long id) {
+    public ResponseEntity<QuestionsResponseDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(questionsService.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<QuestionsResponseDTO> create(@RequestBody QuestionsRequestDTO dto) {
+    public ResponseEntity<QuestionsResponseDto> create(@RequestBody QuestionsRequestDto dto) {
         return ResponseEntity.ok(questionsService.create(dto));
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<QuestionsResponseDTO> update(@PathVariable Long id,
-                                                       @RequestBody QuestionsRequestDTO dto) {
+    public ResponseEntity<QuestionsResponseDto> update(@PathVariable Long id,
+                                                       @RequestBody QuestionsRequestDto dto) {
         return ResponseEntity.ok(questionsService.update(id, dto));
     }
 

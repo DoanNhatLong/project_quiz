@@ -1,18 +1,25 @@
 package com.example.ss6_quiz.controller.users;
 
+import com.example.ss6_quiz.dto.UpdateProfileRequestDto;
 import com.example.ss6_quiz.entity.Users;
 import com.example.ss6_quiz.service.IUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/users")
 @RestController
+@CrossOrigin("*")
 public class UserController {
     @Autowired
     IUsersService usersService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // 1. Lấy danh sách (Read)
     @GetMapping
@@ -44,4 +51,30 @@ public class UserController {
         usersService.deleteUser(id);
         return ResponseEntity.ok("Đã xóa người dùng thành công");
     }
+
+    @PutMapping("/update-profile")
+    public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileRequestDto request) {
+        Users user = usersService.findById(request.id());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("message", "User not found"));
+        }
+
+        if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "Mật khẩu cũ không chính xác"));
+        }
+
+        user.setUsername(request.username());
+
+        if (request.newPassword() != null && !request.newPassword().isBlank()) {
+            String encodedPassword = passwordEncoder.encode(request.newPassword());
+            user.setPassword(encodedPassword);
+        }
+
+        Users updatedUser = usersService.updateUser(user.getId(), user);
+        return ResponseEntity.ok(updatedUser);
+    }
+
 }

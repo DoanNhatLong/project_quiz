@@ -1,16 +1,26 @@
 package com.example.ss6_quiz.service;
 
+import com.example.ss6_quiz.entity.Roles;
 import com.example.ss6_quiz.entity.Users;
+import com.example.ss6_quiz.repository.IRolesRepository;
 import com.example.ss6_quiz.repository.IUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class UsersService implements IUsersService {
     @Autowired
     private IUsersRepository usersRepository;
+
+    @Autowired
+    private IRolesRepository rolesRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public List<Users> getAllUsers() {
@@ -40,9 +50,52 @@ public class UsersService implements IUsersService {
 
     @Override
     public void deleteUser(Long id) {
-        // Xóa logic: có thể xóa cứng hoặc set isDeleted = true
         Users user = getUserById(id);
-        user.setDeleted(true);
+        user.setIsDeleted(true);
         usersRepository.save(user);
     }
+
+    @Override
+    public void registerUser(Users user) {
+        if (usersRepository.existsByUsername(user.getUsername())) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        if (usersRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setIsDeleted(false);
+        user.setStreak(0);
+        user.setXp(0);
+        user.setPoint(0);
+        user.setCreatedAt(LocalDateTime.now());
+
+
+        Roles userRole = rolesRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Default role not found"));
+
+        user.setRoles(userRole);
+
+        usersRepository.save(user);
+    }
+
+    @Override
+    public Users login(String username, String password) {
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Tên đăng nhập không tồn tại"));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("Mật khẩu không chính xác");
+        }
+
+        return user;
+    }
+
+    @Override
+    public Users findById(Long id) {
+        return usersRepository.findById(id).orElse(null);
+    }
+
 }

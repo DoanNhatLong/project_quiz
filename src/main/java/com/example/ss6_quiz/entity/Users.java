@@ -26,15 +26,16 @@ public class Users {
 
     private String password;
 
-    private Integer xp = 0;
+    private Integer xp = 100;
 
     private Integer streak = 0;
 
-    private Integer points = 0;
+    private Integer point = 0;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    boolean isDeleted = false;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted = false;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

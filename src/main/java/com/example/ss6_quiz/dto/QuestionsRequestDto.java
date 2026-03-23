@@ -2,7 +2,7 @@ package com.example.ss6_quiz.dto;
 
 import com.example.ss6_quiz.entity.Questions.QuestionType;
 
-public record QuestionsRequestDTO(
+public record QuestionsRequestDto(
         Long quizId,
         String content,
         QuestionType type,

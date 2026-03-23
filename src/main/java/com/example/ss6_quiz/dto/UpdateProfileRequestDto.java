@@ -1,8 +1,8 @@
 package com.example.ss6_quiz.dto;
 
-public record UpdateProfileRequest(
+public record UpdateProfileRequestDto(
         Long id,
-        String name,
+        String username,
         String oldPassword,
         String newPassword
 ) {}

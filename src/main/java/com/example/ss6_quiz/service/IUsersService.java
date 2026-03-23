@@ -10,4 +10,7 @@ public interface IUsersService {
     Users createUser(Users user);
     Users updateUser(Long id, Users userDetails);
     void deleteUser(Long id);
+    void registerUser(Users user);
+    Users login(String username, String password);
+    Users findById(Long id);
 }

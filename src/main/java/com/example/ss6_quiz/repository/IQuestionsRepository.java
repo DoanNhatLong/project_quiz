@@ -18,4 +18,5 @@ public interface IQuestionsRepository extends JpaRepository<Questions, Long> {
     """, nativeQuery = true)
     List<Questions> findRandom10ByQuizId(@Param("quizId") Long quizId);
     List<Questions> findByQuizId(Long quizId);
+    int countByQuiz_Id(Long quizId);
 }

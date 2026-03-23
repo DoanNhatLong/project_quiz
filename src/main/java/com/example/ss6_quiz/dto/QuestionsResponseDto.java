@@ -3,7 +3,7 @@ package com.example.ss6_quiz.dto;
 import com.example.ss6_quiz.entity.Questions.QuestionType;
 import java.time.LocalDateTime;
 
-public record QuestionsResponseDTO(
+public record QuestionsResponseDto(
         Long id,
         Long quizId,
         String quizTitle,

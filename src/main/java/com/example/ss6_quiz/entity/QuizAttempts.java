@@ -31,7 +31,8 @@ public class QuizAttempts {
 
     private Double score;
     boolean isPassed;
-    LocalDateTime startTime;
+    @Column(name = "started_time", nullable = false)
+    LocalDateTime startedTime;
     LocalDateTime endTime;
     boolean isDeleted = false;
 }
