@@ -1,6 +1,7 @@
 package com.example.ss6_quiz.controller.users;
 
 import com.example.ss6_quiz.dto.UpdateProfileRequestDto;
+import com.example.ss6_quiz.dto.UserSystemDto;
 import com.example.ss6_quiz.entity.Users;
 import com.example.ss6_quiz.service.IUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,10 @@ public class UserController {
 
         Users updatedUser = usersService.updateUser(user.getId(), user);
         return ResponseEntity.ok(updatedUser);
+    }
+    @GetMapping("/all-users")
+    public ResponseEntity<List<UserSystemDto>> getAllUsersSystemDto() {
+        return ResponseEntity.ok(usersService.findAllUserSystemDto());
     }
 
 }

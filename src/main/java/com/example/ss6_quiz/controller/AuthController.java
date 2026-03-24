@@ -56,6 +56,7 @@ public class AuthController {
                     "id", user.getId(),
                     "username", user.getUsername(),
                     "email", user.getEmail(),
+                    "roles", user.getRoles().getName(),
                     "xp", user.getXp(),
                     "streak", user.getStreak(),
                     "point", user.getPoint()

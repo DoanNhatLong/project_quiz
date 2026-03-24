@@ -1,6 +1,8 @@
 package com.example.ss6_quiz.service;
 
+import com.example.ss6_quiz.entity.Questions;
 import com.example.ss6_quiz.entity.Quizzes;
+import com.example.ss6_quiz.repository.IQuestionsRepository;
 import com.example.ss6_quiz.repository.IQuizzesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,8 @@ import java.util.List;
 public class QuizzesService implements IQuizzesService {
     @Autowired
     private IQuizzesRepository quizzesRepository;
+    @Autowired
+    private IQuestionsRepository questionsRepository;
 
     @Override
     public List<Quizzes> getAllQuizzes() {
@@ -42,5 +46,10 @@ public class QuizzesService implements IQuizzesService {
         Quizzes quiz = getQuizById(id);
         quiz.setDeleted(true);
         quizzesRepository.save(quiz);
+    }
+
+    @Override
+    public List<Questions> findAllByQuizId(Long quizId) {
+        return questionsRepository.findAllByQuizId(quizId);
     }
 }

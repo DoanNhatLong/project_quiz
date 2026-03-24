@@ -1,13 +1,16 @@
 package com.example.ss6_quiz.service;
 
+import com.example.ss6_quiz.dto.QuestionUploadDto;
 import com.example.ss6_quiz.dto.QuestionsRequestDto;
 import com.example.ss6_quiz.dto.QuestionsResponseDto;
+import com.example.ss6_quiz.entity.Answers;
 import com.example.ss6_quiz.entity.Questions;
 import com.example.ss6_quiz.entity.Quizzes;
 import com.example.ss6_quiz.repository.IQuestionsRepository;
 import com.example.ss6_quiz.repository.IQuizzesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,5 +94,36 @@ public class QuestionsService implements IQuestionsService {
     @Override
     public List<Questions> findRandom10ByQuizId(Long quizId) {
         return questionsRepository.findRandom10ByQuizId(quizId);
+    }
+
+    @Override
+    @Transactional
+    public void saveQuestion(QuestionUploadDto dto) {
+        Quizzes quiz = quizzesRepository.findById(dto.quiz_id())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Quiz với ID: " + dto.quiz_id()));
+
+        // 2. Tạo đối tượng Questions
+        Questions question = new Questions();
+        question.setQuiz(quiz);
+        question.setContent(dto.content());
+        question.setType(Questions.QuestionType.valueOf(dto.type()));
+
+        // Tính order_index (đếm số câu của quiz này)
+        int currentCount = questionsRepository.countByQuiz_Id(dto.quiz_id());
+        question.setOrderIndex(currentCount + 1);
+
+        // 3. Map list AnswerDto sang list Entity Answers và thiết lập quan hệ 2 chiều
+        List<Answers> answerEntities = dto.answers().stream().map(aDto -> {
+            Answers answer = new Answers();
+            answer.setContent(aDto.content());
+            answer.setCorrect(aDto.is_correct());
+            answer.setQuestion(question);
+            return answer;
+        }).collect(Collectors.toList());
+
+        question.setAnswers(answerEntities);
+
+        questionsRepository.save(question);
+
     }
 }

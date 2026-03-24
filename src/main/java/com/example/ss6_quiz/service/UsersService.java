@@ -1,5 +1,6 @@
 package com.example.ss6_quiz.service;
 
+import com.example.ss6_quiz.dto.UserSystemDto;
 import com.example.ss6_quiz.entity.Roles;
 import com.example.ss6_quiz.entity.Users;
 import com.example.ss6_quiz.repository.IRolesRepository;
@@ -96,6 +97,11 @@ public class UsersService implements IUsersService {
     @Override
     public Users findById(Long id) {
         return usersRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<UserSystemDto> findAllUserSystemDto() {
+        return usersRepository.findAllUserSystemDto();
     }
 
 }

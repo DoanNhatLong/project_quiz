@@ -1,4 +1,5 @@
 package com.example.ss6_quiz.repository;
+import com.example.ss6_quiz.dto.QuestionUploadDto;
 import com.example.ss6_quiz.entity.Questions;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,6 @@ public interface IQuestionsRepository extends JpaRepository<Questions, Long> {
     List<Questions> findRandom10ByQuizId(@Param("quizId") Long quizId);
     List<Questions> findByQuizId(Long quizId);
     int countByQuiz_Id(Long quizId);
+    List<Questions> findAllByQuizId(Long quizId);
+
 }
