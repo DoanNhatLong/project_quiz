@@ -10,6 +10,12 @@ import Profile from "./component/home/Profile.jsx";
 import QuizResult from "./component/quiz/QuizResult.jsx";
 import QuizFinished from "./component/quiz/QuizFinished.jsx";
 import QuizReview from "./component/quiz/QuizReview.jsx";
+import AdminPage from "./pages/AdminPage.jsx";
+import AdminDashboard from "./component/admin/AdminDashboard.jsx";
+import AdminQuiz from "./component/admin/AdminQuiz.jsx";
+import AdminAddQuestions from "./component/admin/AdminAddQuestion.jsx";
+import AdminCheckQuestion from "./component/admin/AdminCheckQuestion.jsx";
+import TestUpload from "./utils/TestUpload.jsx";
 
 function App() {
 
@@ -17,6 +23,13 @@ function App() {
         <>
             <ToastContainer/>
             <Routes>
+                <Route path="/test" element={<TestUpload />} />
+                <Route element={<AdminPage />}>
+                    <Route path="/admin" element={<AdminDashboard />} />
+                    <Route path="/admin/quiz" element={<AdminQuiz />} />
+                    <Route path="/admin/:quizId/add-questions" element={<AdminAddQuestions />} />
+                    <Route path="/admin/:quizId/check-questions" element={<AdminCheckQuestion />} />
+                </Route>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/home/*" element={<HomePage />} />
                 <Route path="/quiz-js" element={<QuizJS />} />

@@ -3,11 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../redux/userSlice.js";
 
+const getRankInfo = (xp = 0) => {
+    if (xp <= 100) return { level: 1, title: "Newbie", icon: "nes-ash", color: "#f7d51d" };
+    if (xp <= 300) return { level: 2, title: "Adventurer", icon: "nes-squirtle", color: "#2ecc71" };
+    if (xp <= 600) return { level: 3, title: "Warrior", icon: "nes-bulbasaur", color: "#3498db" };
+    if (xp <= 1000) return { level: 4, title: "Elite", icon: "nes-charmander", color: "#e67e22" };
+    return { level: 5, title: "Grandmaster", icon: "nes-mario", color: "#9b59b6" };
+};
+
 const RightSide = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const user = useSelector((state) => state.user.data);
+
+    // Lấy thông tin hạng dựa trên xp của user
+    const rank = getRankInfo(user?.xp);
 
     function handleLogout() {
         dispatch(logout());
@@ -17,35 +27,42 @@ const RightSide = () => {
     return (
         <aside style={{ padding: "20px", width: "300px" }}>
             <div className="nes-container is-dark">
-
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "15px" }}>
                     {user ? (
                         <>
                             <div style={{ textAlign: "center" }}>
-                                <i className="nes-ash" style={{ transform: "scaleX(-1)" }}></i>
-                                <p style={{ marginTop: "10px", color: "#f7d51d" }}>LVL. 1 Adventurer</p>
-                                <h3 style={{ fontSize: "1.2rem" }}>Chào {user.username}</h3>
+                                <i className={rank.icon} style={{ transform: "scaleX(-1)" }}></i>
+
+                                <p style={{ marginTop: "10px", color: rank.color, fontWeight: "bold" }}>
+                                    LVL. {rank.level} {rank.title}
+                                </p>
+
+                                <h3 style={{ fontSize: "1.1rem" }}>{user.username}</h3>
+
+                                <div style={{ fontSize: "0.7rem", color: "#aaa" }}>
+                                    Point: {user.point || 0}
+                                </div>
                             </div>
 
                             <button
                                 type="button"
                                 className="nes-btn is-primary is-fullwidth"
                                 onClick={() => navigate('/profile')}
-                                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}
+                                style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", fontSize: "0.8rem" }}
                             >
-                                <i className="ra ra-player"></i>
-                                INFO
+                                PROFILE
                             </button>
 
                             <button
                                 type="button"
                                 className="nes-btn is-error is-fullwidth"
                                 onClick={handleLogout}
+                                style={{ fontSize: "0.8rem" }}
                             >
                                 LOGOUT
                             </button>
                         </>
-                    ) : (
+                    ): (
                         <>
                             <div style={{ textAlign: "center" }}>
                                 <i className="nes-pokeball"></i>

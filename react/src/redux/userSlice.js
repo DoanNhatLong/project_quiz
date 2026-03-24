@@ -9,19 +9,17 @@ const getInitialUser = () => {
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        data: getInitialUser(), // Lấy từ storage khi khởi tạo app
+        data: getInitialUser(),
     },
     reducers: {
         setUser: (state, action) => {
             state.data = action.payload;
-            // TỰ ĐỘNG LƯU: Khi có data mới, lưu thẳng vào localStorage
             if (action.payload) {
                 localStorage.setItem('user', JSON.stringify(action.payload));
             } else {
                 localStorage.removeItem('user');
             }
         },
-        // Thêm action logout cho gọn
         logout: (state) => {
             state.data = null;
             localStorage.removeItem('user');

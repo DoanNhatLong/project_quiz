@@ -15,7 +15,6 @@ export default function LoginForm() {
         userService.loginUser({ username, password })
             .then(res => {
                 const user = res.data;
-
                 dispatch(setUser(user));
                 toast.success("Đăng nhập thành công!");
                 navigate('/home');
