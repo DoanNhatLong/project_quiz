@@ -16,6 +16,8 @@ import AdminQuiz from "./component/admin/AdminQuiz.jsx";
 import AdminAddQuestions from "./component/admin/AdminAddQuestion.jsx";
 import AdminCheckQuestion from "./component/admin/AdminCheckQuestion.jsx";
 import TestUpload from "./utils/TestUpload.jsx";
+import TestExcel from "./utils/TestExcel.jsx";
+import AdminUsers from "./component/admin/AdminUsers.jsx";
 
 function App() {
 
@@ -24,9 +26,11 @@ function App() {
             <ToastContainer/>
             <Routes>
                 <Route path="/test" element={<TestUpload />} />
+                <Route path="/testEx" element={<TestExcel />} />
                 <Route element={<AdminPage />}>
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/admin/quiz" element={<AdminQuiz />} />
+                    <Route path="/admin/users" element={<AdminUsers />} />
                     <Route path="/admin/:quizId/add-questions" element={<AdminAddQuestions />} />
                     <Route path="/admin/:quizId/check-questions" element={<AdminCheckQuestion />} />
                 </Route>

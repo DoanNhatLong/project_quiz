@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "rpg-awesome/css/rpg-awesome.min.css";
 
+@theme {
+    --prefix: "tw-";
+}
 #root {
     width: 100%;
 }

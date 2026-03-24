@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {uploadToCloudinary} from "../../service/uploadService.js";
 import {toast} from "react-toastify";
 import axios from "axios";
+import * as XLSX from 'xlsx';
+import {HandleImport} from "../../utils/HandleImport.jsx";
 
 export default function AdminAddQuestion() {
     const { quizId } = useParams();
@@ -23,6 +25,30 @@ export default function AdminAddQuestion() {
     ]);
 
     // --- CÁC HÀM XỬ LÝ (GIỮ NGUYÊN CƠ CHẾ CẬP NHẬT) ---
+    const handleExcelUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const idToast = toast.loading("Đang xử lý file Excel...");
+        try {
+            const questions = await HandleImport(file, quizId);
+
+            console.log("Dữ liệu JSON chuẩn bị gửi lên BE:", questions);
+
+            const response = await axios.post("http://localhost:8080/questions/upload-list", questions);
+
+            if (response.status === 201 || response.status === 200) {
+                toast.update(idToast, { render: `Tải lên thành công ${questions.length} câu hỏi!`, type: "success", isLoading: false, autoClose: 3000 });
+                navigate(`/admin/quiz`);
+            }
+        } catch (error) {
+            console.error(error);
+            toast.update(idToast, { render: "Lỗi khi xử lý file Excel!", type: "error", isLoading: false, autoClose: 3000 });
+        } finally {
+            e.target.value = ""; // Reset để có thể chọn lại file
+        }
+    };
+
     const handleCheckCorrect = (id) => {
         const updatedAnswers = answers.map(ans =>
             ans.id === id ? { ...ans, isCorrect: !ans.isCorrect } : ans
@@ -85,6 +111,8 @@ export default function AdminAddQuestion() {
         }
     };
 
+
+
     return (
         <div className="admin-table-container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
             {/* Header & Back Button - GIỮ NGUYÊN */}
@@ -97,7 +125,13 @@ export default function AdminAddQuestion() {
                 </div>
 
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept=".txt,.csv,.xlsx" />
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        accept=".txt,.csv,.xlsx"
+                        onChange={handleExcelUpload}
+                    />
                     <button className="btn-admin" style={{ backgroundColor: '#27ae60', color: 'white' }} onClick={() => fileInputRef.current.click()}>
                         📁 Tải lên bộ câu hỏi
                     </button>

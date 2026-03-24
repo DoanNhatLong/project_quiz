@@ -1,11 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {toast} from "react-toastify";
+import AddQuizModal from "../../utils/AddQuizModal.jsx";
 
 const AdminQuiz = () => {
     const [quizzes, setQuizzes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const fetchQuizzes = () => {
+        axios.get('http://localhost:8080/quizzes')
+            .then(response => setQuizzes(response.data))
+            .catch(error => console.error("Lỗi:", error));
+    };
+
+    const handleSaveQuiz = async (quizData) => {
+        try {
+            const response = await axios.post('http://localhost:8080/quizzes/create', quizData);
+            if (response.status === 201 || response.status === 200) {
+                toast.success("Tạo Quiz mới thành công!");
+                setIsModalOpen(false);
+                fetchQuizzes(); // Cập nhật lại danh sách tại chỗ
+            }
+        } catch (error) {
+            toast.error("Lỗi khi tạo Quiz!");
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         axios.get('http://localhost:8080/quizzes')
@@ -24,6 +47,16 @@ const AdminQuiz = () => {
     return (
         <div>
             <div className="admin-table-container">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                    <h2 style={{ margin: 0 }}>Quản lý Quiz</h2>
+                    <button
+                        className="btn-admin"
+                        style={{ backgroundColor: '#27ae60', color: 'white' }}
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        ➕ Thêm Quiz mới
+                    </button>
+                </div>
                 <table className="admin-table">
                     <thead>
                     <tr>
@@ -80,6 +113,11 @@ const AdminQuiz = () => {
                     </tbody>
                 </table>
             </div>
+            <AddQuizModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSave={handleSaveQuiz}
+            />
         </div>
     );
 };

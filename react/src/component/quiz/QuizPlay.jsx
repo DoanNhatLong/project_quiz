@@ -4,6 +4,7 @@ import {getQuestionsForPlay, submitQuizResult} from '../../service/quizService';
 import { toast } from 'react-toastify';
 import Navbar from "../common/Navbar.jsx";
 import './css/QuizPlay.css';
+import MarkDownView from "../../utils/MarkDownView.jsx";
 
 export default function QuizPlay() {
     const { quizId, attemptId } = useParams();
@@ -202,7 +203,9 @@ export default function QuizPlay() {
                             {currentQ.type === 'single' ? '✦ Chọn 1' : '✦ Chọn nhiều'}
                         </span>
                     </div>
-                    <h2 className="question-text">{currentQ.content}</h2>
+                    <h2 className="question-text">
+                        <MarkDownView content={currentQ.content} />
+                    </h2>
 
                     <div className="options-grid">
                         {currentQ.answers?.map((ans) => (

@@ -29,6 +29,12 @@ const AdminPage = () => {
                     >
                         Quản lý Quiz
                     </Link>
+                    <Link
+                        to="/admin/users"
+                        className={`admin-link ${location.pathname === '/admin/users' ? 'active' : ''}`}
+                    >
+                        Quản lý Users
+                    </Link>
                 </nav>
                 <Link to="/home" className="admin-logout">
                     Thoát hệ thống
