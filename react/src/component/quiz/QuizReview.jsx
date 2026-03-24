@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {getQuizAttemptDetails} from "../../service/quizService.js";
 import Navbar from "../common/Navbar.jsx";
 import "./css/QuizReview.css";
+import MarkDownView from "../../utils/MarkDownView.jsx";
 
 export default function QuizReview() {
     const {attemptId} = useParams();
@@ -58,7 +59,9 @@ export default function QuizReview() {
                                 </span>
                             </div>
 
-                            <p className="question-body">{item.question.content}</p>
+                            <div className="question-body">
+                              <MarkDownView content={ item.question.content}/>
+                            </div>
 
                             <div className="answers-list">
                                 {item.question.answers.map(ans => {

@@ -18,6 +18,7 @@ import AdminCheckQuestion from "./component/admin/AdminCheckQuestion.jsx";
 import TestUpload from "./utils/TestUpload.jsx";
 import TestExcel from "./utils/TestExcel.jsx";
 import AdminUsers from "./component/admin/AdminUsers.jsx";
+import QuizPractice from "./component/quiz/QuizPractice.jsx";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
                 <Route path="/quiz-play/:quizId/:attemptId" element={<QuizPlay />} />
                 <Route path="/profile/*" element={<Profile />} />
                 <Route path="/quiz-result" element={<QuizResult />} />
+                <Route path="/quiz-practice" element={<QuizPractice />} />
                 <Route path="/quiz-finished/:attemptId" element={<QuizFinished />} />
                 <Route path="/quiz-review/:attemptId" element={<QuizReview />} />
                 <Route path="*" element={<HomePage />}  />

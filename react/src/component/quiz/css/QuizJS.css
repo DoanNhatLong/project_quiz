@@ -1,103 +1,62 @@
-.level-image-container {
-    width: 100%;
-    height: 140px;
-    position: relative; /* Quan trọng để lock-overlay căn theo nó */
-    border-radius: 10px;
-    overflow: hidden;
-    background: #eee;
-    margin-bottom: 15px;
-}
-
-.level-thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Giúp ảnh phủ kín khung hình */
-}
-
-.lock-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Làm tối ảnh khi bị khóa */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.lock-icon {
-    font-size: 30px;
-}
-
-.level-card.locked {
-    filter: grayscale(1); /* Biến toàn bộ card bị khóa thành màu xám */
-    cursor: not-allowed;
-}
-
+/* QuizJS.css */
 .quiz-js-container {
-    background-color: #f4f7f6;
+    padding: 20px;
+    background-color: #f4f4f4;
     min-height: 100vh;
 }
 
-.difficulty-selection {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-    text-align: center;
-}
-
 .levels-grid {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
     margin-top: 30px;
 }
 
 .level-card {
+    transition: transform 0.2s;
     background: white;
-    width: 200px;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
 }
 
 .level-card.unlocked:hover {
     transform: translateY(-10px);
 }
 
-.level-card.locked {
-    opacity: 0.6;
-    filter: grayscale(0.8);
-    cursor: not-allowed;
-    background: #e0e0e0;
-}
-
-.level-image-placeholder {
+.level-thumbnail {
     width: 100%;
-    height: 120px;
-    background: #eee;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
+    height: 150px;
+    object-fit: cover;
+    image-rendering: pixelated; /* Giúp ảnh trông giống pixel art hơn */
 }
 
-.start-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    background: #007bff;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
+.level-card.locked {
+    filter: grayscale(1); /* Làm xám các level chưa mở */
+    opacity: 0.8;
 }
 
-.start-btn:disabled {
-    background: #95a5a6;
-    cursor: not-allowed;
+.lock-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.unlock-hint {
+    font-size: 0.7rem;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* Ép thanh progress về độ cao mảnh và đẹp */
+.nes-progress {
+    height: 15px !important; /* Độ cao chuẩn cho game 8-bit */
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Đảm bảo thanh progress không bị méo trên Chrome/Safari */
+.nes-progress::-webkit-progress-bar {
+    background-color: #e0e0e0;
 }
