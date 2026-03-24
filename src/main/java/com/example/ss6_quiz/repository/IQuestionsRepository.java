@@ -21,5 +21,7 @@ public interface IQuestionsRepository extends JpaRepository<Questions, Long> {
     List<Questions> findByQuizId(Long quizId);
     int countByQuiz_Id(Long quizId);
     List<Questions> findAllByQuizId(Long quizId);
+    @Query("SELECT COALESCE(MAX(q.orderIndex), 0) FROM Questions q WHERE q.quiz.id = :quizId")
+    Integer findMaxOrderIndexByQuizId(Long quizId);
 
 }

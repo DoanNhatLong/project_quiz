@@ -1,5 +1,6 @@
 package com.example.ss6_quiz.service;
 
+import com.example.ss6_quiz.dto.QuizRequestDto;
 import com.example.ss6_quiz.entity.Questions;
 import com.example.ss6_quiz.entity.Quizzes;
 import com.example.ss6_quiz.repository.IQuestionsRepository;
@@ -51,5 +52,15 @@ public class QuizzesService implements IQuizzesService {
     @Override
     public List<Questions> findAllByQuizId(Long quizId) {
         return questionsRepository.findAllByQuizId(quizId);
+    }
+
+    @Override
+    public Quizzes createQuiz(QuizRequestDto dto) {
+        Quizzes quiz = new Quizzes();
+        quiz.setTitle(dto.title());
+        quiz.setDescription(dto.description());
+        quiz.setPassScore(dto.passScore() != null ? dto.passScore().floatValue() : 0.5f);
+        quiz.setDeleted(false);
+        return quizzesRepository.save(quiz);
     }
 }

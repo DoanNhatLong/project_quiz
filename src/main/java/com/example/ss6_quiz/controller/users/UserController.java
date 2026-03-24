@@ -5,6 +5,10 @@ import com.example.ss6_quiz.dto.UserSystemDto;
 import com.example.ss6_quiz.entity.Users;
 import com.example.ss6_quiz.service.IUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -80,6 +84,18 @@ public class UserController {
     @GetMapping("/all-users")
     public ResponseEntity<List<UserSystemDto>> getAllUsersSystemDto() {
         return ResponseEntity.ok(usersService.findAllUserSystemDto());
+    }
+
+    @GetMapping("/admin")
+    public ResponseEntity<Page<Users>> listUsers(
+            @RequestParam(required = false) String username,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("xp").descending());
+
+        Page<Users> userPage = usersService.findAllUsers(pageable, username);
+        return ResponseEntity.ok(userPage);
     }
 
 }

@@ -1,10 +1,12 @@
 package com.example.ss6_quiz.controller.users;
 
+import com.example.ss6_quiz.dto.QuizRequestDto;
 import com.example.ss6_quiz.entity.Questions;
 import com.example.ss6_quiz.entity.Quizzes;
 import com.example.ss6_quiz.service.IQuestionsService;
 import com.example.ss6_quiz.service.IQuizzesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/quizzes")
+@CrossOrigin("*")
 public class QuizzesController {
     @Autowired
     private IQuizzesService quizzesService;
@@ -47,6 +50,12 @@ public class QuizzesController {
     public ResponseEntity<String> delete(@PathVariable Long id) {
         quizzesService.deleteQuiz(id);
         return ResponseEntity.ok("Đã xóa bộ câu hỏi thành công!");
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<Quizzes> createQuiz(@RequestBody QuizRequestDto dto) {
+        Quizzes newQuiz = quizzesService.createQuiz(dto);
+        return new ResponseEntity<>(newQuiz, HttpStatus.CREATED);
     }
 
 }

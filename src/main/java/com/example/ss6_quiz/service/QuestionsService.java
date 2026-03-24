@@ -126,4 +126,43 @@ public class QuestionsService implements IQuestionsService {
         questionsRepository.save(question);
 
     }
+
+    @Transactional
+    @Override
+    public void importAll(List<QuestionUploadDto> dtoList) {
+        if (dtoList == null || dtoList.isEmpty()) return;
+
+        // 1. Lấy Quiz ID từ phần tử đầu tiên (vì tất cả thuộc cùng 1 Quiz)
+        Long quizId = dtoList.get(0).quiz_id();
+        Quizzes quiz = quizzesRepository.findById(quizId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Quiz ID: " + quizId));
+
+        // 2. Lấy order_index lớn nhất hiện tại trong DB của Quiz này
+        int currentMaxOrder = questionsRepository.findMaxOrderIndexByQuizId(quizId);
+
+        // 3. Duyệt danh sách DTO để chuyển thành Entity
+        for (QuestionUploadDto dto : dtoList) {
+            Questions question = new Questions();
+            question.setContent(dto.content());
+            question.setType(Questions.QuestionType.valueOf(dto.type()));
+            question.setQuiz(quiz);
+            currentMaxOrder++;
+            question.setOrderIndex(currentMaxOrder);
+
+            // 4. Map Answers và thiết lập quan hệ ngược (Bắt buộc để Cascade chạy)
+            List<Answers> answers = dto.answers().stream().map(aDto -> {
+                Answers answer = new Answers();
+                answer.setContent(aDto.content());
+                answer.setCorrect(aDto.is_correct());
+                answer.setQuestion(question);
+                return answer;
+            }).collect(Collectors.toList());
+
+            // 5. Gán list answers vào Question
+            question.setAnswers(answers);
+
+            // 6. Lưu Question (Hibernate tự lưu Answers nhờ CascadeType.ALL)
+            questionsRepository.save(question);
+        }
+    }
 }

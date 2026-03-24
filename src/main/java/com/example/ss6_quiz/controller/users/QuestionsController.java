@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/questions")
+@CrossOrigin("*")
 public class QuestionsController {
 
     @Autowired
@@ -68,5 +69,25 @@ public class QuestionsController {
     @GetMapping("/detail/{quizId}")
     public List<Questions> getQuestionsByQuizId(@PathVariable Long quizId) {
         return quizzesService.findAllByQuizId(quizId);
+    }
+    @PostMapping("/upload-list")
+    public ResponseEntity<String> importQuestions(@RequestBody List<QuestionUploadDto> dtoList) {
+        try {
+
+            if (dtoList == null || dtoList.isEmpty()) {
+                return ResponseEntity.badRequest().body("Danh sách câu hỏi trống!");
+            }
+            questionsService.importAll(dtoList);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Import thành công " + dtoList.size() + " câu hỏi.");
+        } catch (RuntimeException e) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Đã xảy ra lỗi hệ thống khi import!");
+        }
     }
 }

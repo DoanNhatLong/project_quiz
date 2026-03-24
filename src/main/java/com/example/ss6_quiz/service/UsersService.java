@@ -6,6 +6,10 @@ import com.example.ss6_quiz.entity.Users;
 import com.example.ss6_quiz.repository.IRolesRepository;
 import com.example.ss6_quiz.repository.IUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -104,4 +108,8 @@ public class UsersService implements IUsersService {
         return usersRepository.findAllUserSystemDto();
     }
 
+    @Override
+    public Page<Users> findAllUsers(Pageable pageable, String username) {
+        return usersRepository.findAllUsersByRoleUser(username, pageable);
+    }
 }

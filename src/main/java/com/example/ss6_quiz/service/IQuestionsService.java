@@ -16,4 +16,5 @@ public interface IQuestionsService {
     void delete(Long id);
     List<Questions> findRandom10ByQuizId(Long quizId);
     void saveQuestion (QuestionUploadDto dto);
+    void importAll(List<QuestionUploadDto> dtoList);
 }
