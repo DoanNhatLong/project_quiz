@@ -115,13 +115,11 @@ export default function AdminAddQuestion() {
 
     return (
         <div className="admin-table-container" style={{ maxWidth: '1000px', margin: '0 auto' }}>
-            {/* Header & Back Button - GIỮ NGUYÊN */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                     <button className="btn-admin" style={{ backgroundColor: '#6c757d', color: 'white' }} onClick={() => navigate('/admin/quiz')}>
                         Quay lại
                     </button>
-                    <h2 style={{ margin: 0 }}>Quản lý câu hỏi Quiz #{quizId}</h2>
                 </div>
 
                 <div style={{ display: 'flex', gap: '10px' }}>
@@ -140,7 +138,6 @@ export default function AdminAddQuestion() {
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '25px' }}>
 
-                {/* CỘT TRÁI: FORM NHẬP CÂU HỎI CHÍNH - GIỮ NGUYÊN */}
                 <div className="admin-card" style={{ padding: '25px', border: '1px solid #ddd', borderRadius: '12px', background: '#fff' }}>
                     <h4 style={{ marginBottom: '15px' }}>Nội dung câu hỏi</h4>
                     <textarea
@@ -201,7 +198,6 @@ export default function AdminAddQuestion() {
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                    {/* KHU VỰC ẢNH - GIỮ NGUYÊN VÀ THÊM PREVIEW */}
                     <div className="admin-card" style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '12px', background: '#fff' }}>
                         <h4 style={{ marginBottom: '15px' }}>🖼️ Hình ảnh đính kèm</h4>
                         <div style={{
@@ -224,14 +220,23 @@ export default function AdminAddQuestion() {
                         </p>
                     </div>
 
-                    {/* PHẦN HƯỚNG DẪN - ĐÃ KHÔI PHỤC GIỮ NGUYÊN */}
                     <div className="admin-card" style={{ padding: '20px', border: '1px solid #ddd', borderRadius: '12px', background: '#fcfcfc' }}>
                         <h4 style={{ marginBottom: '10px' }}>Hướng dẫn</h4>
                         <ul style={{ fontSize: '0.85rem', paddingLeft: '15px', color: '#555', lineHeight: '1.6' }}>
                             <li><b>Đáp án:</b> Tích chọn 1 hoặc nhiều ô vuông để xác định đáp án đúng.</li>
                             <li><b>Hình ảnh:</b> Tải ảnh trực tiếp từ máy tính để minh họa cho câu hỏi.</li>
                             <li><b>Bộ câu hỏi:</b> Tải bộ câu hỏi từ file .csv hoặc .xlsx.</li>
+                            <li><b>Sử dụng AI:</b> Sử dụng AI để tự động tạo câu hỏi.</li>
                         </ul>
+                    </div>
+                    <div className="admin-card" style={{ marginTop: '20px' }}>
+                        <button
+                            className="btn-admin"
+                            style={{ width: '100%', backgroundColor: '#8e44ad', color: 'white' }}
+                            onClick={() => navigate(`/admin/${quizId}/ai-assistant`)}
+                        >
+                            ✨ Sử dụng AI hỗ trợ
+                        </button>
                     </div>
                 </div>
             </div>

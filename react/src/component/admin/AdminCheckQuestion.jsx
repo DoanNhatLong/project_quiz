@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import ConfirmModal from "../../utils/Modal.jsx";
+import ConfirmModal from "../../utils/modal/Modal.jsx";
 import {toast} from "react-toastify";
 import MarkDownView from "../../utils/MarkDownView.jsx";
 

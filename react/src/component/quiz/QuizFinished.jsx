@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import Navbar from "../common/Navbar.jsx";
+import axios from "axios";
 
 export default function QuizFinished() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const resultData = location.state?.resultData;
+    const { resultData, isFreshSubmit, quizLevel } = location.state || {};
+
+    useEffect(() => {
+        if (isFreshSubmit && resultData?.correct >= 7) {
+            const xpToAdd = quizLevel * 50;
+            console.log(xpToAdd)
+        }
+    }, [isFreshSubmit, resultData, quizLevel]);
 
     if (!resultData) {
         return (

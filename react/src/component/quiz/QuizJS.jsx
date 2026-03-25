@@ -39,7 +39,7 @@ export default function QuizJS() {
             }
         }
         else {
-            navigate(`/quiz-practice`);
+            navigate(`/quiz-practice?language=JS&level=${quizId}`);
         }
     };
 

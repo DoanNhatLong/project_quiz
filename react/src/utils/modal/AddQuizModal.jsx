@@ -4,12 +4,13 @@ const AddQuizModal = ({ isOpen, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         title: '',
         description: '',
-        pass_score: 0.5
+        pass_score: 0.5,
+        language: 'JS',
+        level: 1
     });
 
     if (!isOpen) return null;
 
-    // --- STYLES OBJECT ---
     const styles = {
         overlay: {
             position: 'fixed',
@@ -50,7 +51,7 @@ const AddQuizModal = ({ isOpen, onClose, onSave }) => {
             border: '1px solid #ddd',
             borderRadius: '8px',
             fontSize: '14px',
-            boxSizing: 'border-box' // Quan trọng để không bị tràn chiều rộng
+            boxSizing: 'border-box'
         },
         textarea: {
             width: '100%',
@@ -92,7 +93,8 @@ const AddQuizModal = ({ isOpen, onClose, onSave }) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: name === 'pass_score' ? parseFloat(value) : value
+            [name]: name === 'pass_score' ? parseFloat(value) :
+                name === 'level' ? parseInt(value) : value
         }));
     };
 
@@ -100,7 +102,13 @@ const AddQuizModal = ({ isOpen, onClose, onSave }) => {
         e.preventDefault();
         if (!formData.title.trim()) return;
         onSave(formData);
-        setFormData({ title: '', description: '', pass_score: 0.5 });
+        setFormData({
+            title: '',
+            description: '',
+            pass_score: 0.5,
+            language: 'JS',
+            level: 1
+        });
     };
 
     return (
@@ -131,6 +139,35 @@ const AddQuizModal = ({ isOpen, onClose, onSave }) => {
                             value={formData.description}
                             onChange={handleChange}
                         />
+                    </div>
+
+                    <div style={styles.formGroup}>
+                        <label style={styles.label}>Ngôn ngữ lập trình</label>
+                        <select
+                            name="language"
+                            style={styles.input}
+                            value={formData.language}
+                            onChange={handleChange}
+                        >
+                            <option value="JS">JavaScript (JS)</option>
+                            <option value="JAVA">Java</option>
+                        </select>
+                    </div>
+
+                    <div style={styles.formGroup}>
+                        <label style={styles.label}>Độ khó (Level)</label>
+                        <select
+                            name="level"
+                            style={styles.input}
+                            value={formData.level}
+                            onChange={handleChange}
+                        >
+                            <option value="1">Level 1</option>
+                            <option value="2">Level 2</option>
+                            <option value="3">Level 3</option>
+                            <option value="4">Level 4</option>
+                            <option value="5">Level 5</option>
+                        </select>
                     </div>
 
                     <div style={styles.formGroup}>

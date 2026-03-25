@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {toast} from "react-toastify";
-import AddQuizModal from "../../utils/AddQuizModal.jsx";
-
+import AddQuizModal from "../../utils/modal/AddQuizModal.jsx";
+import ConfirmAddQuestionModal from "../../utils/modal/ConfirmAddQuestionModal.jsx";
 const AdminQuiz = () => {
     const [quizzes, setQuizzes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [selectedQuiz, setSelectedQuiz] = useState(null);
 
     const fetchQuizzes = () => {
         axios.get('http://localhost:8080/quizzes')
@@ -63,6 +65,7 @@ const AdminQuiz = () => {
                         <th style={{ width: '50px' }}>STT</th>
                         <th style={{ width: '200px' }}>Tiêu đề</th>
                         <th>Mô tả</th>
+                        <th>Độ khó </th>
                         <th style={{ width: '100px' }}>Điểm đạt</th>
                         <th style={{ width: '280px', textAlign: 'center' }}>Thao tác</th>
                     </tr>
@@ -73,6 +76,7 @@ const AdminQuiz = () => {
                             <td>{index+1}</td>
                             <td style={{ fontWeight: 'bold' }}>{quiz.title}</td>
                             <td style={{ fontSize: '0.9rem', color: '#666' }}>{quiz.description}</td>
+                            <td style={{ fontSize: '0.9rem', color: '#666' }}>{quiz.level}</td>
                             <td>
                                 <span className="badge-pass">
                                     {Math.round(quiz.passScore * 100)}%
@@ -102,7 +106,10 @@ const AdminQuiz = () => {
                                             fontSize: '0.85rem',
                                             whiteSpace: 'nowrap'
                                         }}
-                                        onClick={() => navigate(`/admin/${quiz.id}/add-questions`)}
+                                        onClick={() => {
+                                            setSelectedQuiz(quiz);
+                                            setIsConfirmOpen(true);
+                                        }}
                                     >
                                         Thêm câu hỏi
                                     </button>
@@ -117,6 +124,16 @@ const AdminQuiz = () => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSave={handleSaveQuiz}
+            />
+
+            <ConfirmAddQuestionModal
+                isOpen={isConfirmOpen}
+                quizTitle={selectedQuiz?.title}
+                onClose={() => setIsConfirmOpen(false)}
+                onConfirm={() => {
+                    setIsConfirmOpen(false);
+                    navigate(`/admin/${selectedQuiz.id}/add-questions`);
+                }}
             />
         </div>
     );
