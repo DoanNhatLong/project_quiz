@@ -1,11 +1,12 @@
 import axios from 'axios';
+import api from "../api/axios.js";
 
 const AUTH_URL = 'http://localhost:8080/auth';
 const USER_URL = 'http://localhost:8080/users';
 
 export const userService = {
     getAllUsers: () => {
-        return axios.get(USER_URL)
+        return api.get(USER_URL)
             .then(response => response.data)
             .catch(() => []);
     },
@@ -20,7 +21,7 @@ export const userService = {
         return users.some(user => user[field] === value);
     },
 
-    loginUser: (credentials) => {
-        return axios.post(`${AUTH_URL}/login`, credentials);
+    loginUser: async (credentials) => {
+        return await api.post(`${AUTH_URL}/login`, credentials);
     },
 };

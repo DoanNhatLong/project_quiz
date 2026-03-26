@@ -72,7 +72,7 @@ export default function AdminUsers() {
                         <td style={{color: 'green', fontWeight: 'bold'}}>{user.point}</td>
                         <td>
                             <button className="btn-delete" onClick={() => handleDelete(user.id)}>
-                                Xóa
+                                Block
                             </button>
                         </td>
                     </tr>

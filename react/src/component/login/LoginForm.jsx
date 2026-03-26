@@ -12,15 +12,31 @@ export default function LoginForm() {
     const dispatch = useDispatch()
 
     const handleSubmit = () => {
+        // Kiểm tra dữ liệu đầu vào cơ bản
+        if (!username || !password) {
+            toast.warn("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
         userService.loginUser({ username, password })
             .then(res => {
-                const user = res.data;
-                dispatch(setUser(user));
-                toast.success("Đăng nhập thành công!");
+                const data = res.data; // Đây là Object Map.of từ Java bạn viết lúc nãy
+
+                // --- BƯỚC QUAN TRỌNG: LƯU TOKEN VÀO LOCALSTORAGE ---
+                localStorage.setItem('token', data.token);
+                // Lưu thêm info user dạng chuỗi để dùng khi F5 trang
+                localStorage.setItem('user', JSON.stringify(data));
+
+                // Lưu vào Redux để các component khác (RightSide, Header) cập nhật ngay lập tức
+                dispatch(setUser(data));
+
+                toast.success("Chào mừng Adventurer trở lại!");
                 navigate('/home');
             })
             .catch(err => {
-                toast.error(err.response?.data || "Sai tên đăng nhập hoặc mật khẩu!");
+                console.error("Login Error:", err);
+                const errorMsg = err.response?.data || "Sai tên đăng nhập hoặc mật khẩu!";
+                toast.error(typeof errorMsg === 'string' ? errorMsg : "Lỗi đăng nhập!");
             });
     }
 

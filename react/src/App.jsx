@@ -22,6 +22,7 @@ import QuizPractice from "./component/quiz/QuizPractice.jsx";
 import Store from "./component/home/Store.jsx";
 import AdminAIAssistant from "./component/admin/AdminAIAssistant.jsx";
 import QuizExam from "./component/quiz/QuizExam.jsx";
+import AdminExam from "./component/admin/AdminExam.jsx";
 
 function App() {
 
@@ -38,6 +39,8 @@ function App() {
                     <Route path="/admin/:quizId/add-questions" element={<AdminAddQuestions />} />
                     <Route path="/admin/:quizId/check-questions" element={<AdminCheckQuestion />} />
                     <Route path="/admin/:quizId/ai-assistant" element={<AdminAIAssistant />} />
+                    <Route path="/admin/exam" element={<AdminExam />} />
+
                 </Route>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/home/*" element={<HomePage />} />

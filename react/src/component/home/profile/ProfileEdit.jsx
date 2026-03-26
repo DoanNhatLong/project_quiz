@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../../redux/userSlice.js";
 import { toast } from "react-toastify";
-import axios from "axios"; // Đảm bảo đã install axios
+import api from "../../../api/axios.js"; // Đảm bảo đã install axios
 
 const ProfileEdit = () => {
     const navigate = useNavigate();
@@ -33,24 +33,24 @@ const ProfileEdit = () => {
         setLoading(true);
         try {
             // 2. Gửi request đến API Update Profile
-            const response = await axios.put("http://localhost:8080/users/update-profile", {
+            const response = await api.put("/users/update-profile", {
                 id: user.id,
                 username: tempName,
                 oldPassword: oldPassword,
                 newPassword: newPassword
-            }, {
-                headers: {
-                    Authorization: `Bearer ${user.token}` // Nếu bạn dùng Spring Security
-                }
             });
 
+            const updatedUser = response.data;
+            const currentToken = localStorage.getItem('token'); // Lấy lại token đang dùng
 
             dispatch(setUser({
-                ...response.data,
-                token: user.token
+                ...updatedUser,
+                token: currentToken
             }));
 
-            toast.success("Cập nhật thông tin thành công!");
+            localStorage.setItem('user', JSON.stringify({ ...updatedUser, token: currentToken }));
+
+            toast.success("Hành trang đã được cập nhật!");
             navigate('/profile');
 
         } catch (error) {

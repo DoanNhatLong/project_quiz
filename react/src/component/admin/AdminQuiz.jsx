@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import {toast} from "react-toastify";
 import AddQuizModal from "../../utils/modal/AddQuizModal.jsx";
 import ConfirmAddQuestionModal from "../../utils/modal/ConfirmAddQuestionModal.jsx";
+import api from "../../api/axios.js";
 const AdminQuiz = () => {
     const [quizzes, setQuizzes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -13,14 +13,14 @@ const AdminQuiz = () => {
     const [selectedQuiz, setSelectedQuiz] = useState(null);
 
     const fetchQuizzes = () => {
-        axios.get('http://localhost:8080/quizzes')
+        api.get('http://localhost:8080/quizzes')
             .then(response => setQuizzes(response.data))
             .catch(error => console.error("Lỗi:", error));
     };
 
     const handleSaveQuiz = async (quizData) => {
         try {
-            const response = await axios.post('http://localhost:8080/quizzes/create', quizData);
+            const response = await api.post('http://localhost:8080/quizzes/create', quizData);
             if (response.status === 201 || response.status === 200) {
                 toast.success("Tạo Quiz mới thành công!");
                 setIsModalOpen(false);
@@ -33,7 +33,7 @@ const AdminQuiz = () => {
     };
 
     useEffect(() => {
-        axios.get('http://localhost:8080/quizzes')
+        api.get('http://localhost:8080/quizzes')
             .then(response => {
                 setQuizzes(response.data);
                 setIsLoading(false);

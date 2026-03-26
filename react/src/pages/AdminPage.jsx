@@ -6,7 +6,7 @@ const AdminPage = () => {
     const user = useSelector((state) => state.user.data);
     const location = useLocation();
 
-    const isAdmin = user && user.roles === 'role_admin';
+    const isAdmin = user && user.roles === 'admin';
 
     if (!isAdmin) {
         return <Navigate to="/" replace />;
@@ -34,6 +34,12 @@ const AdminPage = () => {
                         className={`admin-link ${location.pathname === '/admin/users' ? 'active' : ''}`}
                     >
                         Quản lý Users
+                    </Link>
+                    <Link
+                        to="/admin/exam"
+                        className={`admin-link ${location.pathname === '/admin/exam' ? 'active' : ''}`}
+                    >
+                        Tạo đề thi
                     </Link>
                 </nav>
                 <Link to="/home" className="admin-logout">
